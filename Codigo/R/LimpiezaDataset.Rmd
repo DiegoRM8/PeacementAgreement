@@ -1,0 +1,61 @@
+---
+title: "Visualización de Datos"
+author: "Diego Refoyo Matellán"
+date: "09/06/2021"
+output: 
+  html_document:
+    highlight: default
+    number_sections: yes
+    theme: cosmo
+    toc: yes
+    toc_depth: 2
+    includes:
+      in_header: PEC1-header.html
+---
+
+# Limpieza del archivo
+
+```{r}
+library(kableExtra) # biblioteca empleada para mejorar la estética de las tablas
+library(dplyr)
+```
+
+## Lectura del archivo
+
+```{r}
+
+dataframe <- read.csv("C:/Users/USUARIO/Desktop/Master/Segundo_Cuatri/Nueva carpeta/PRAC2/Documentos/pax_all_agreements_data.csv", header = T, sep = ";")
+
+```
+
+Una vez cargados los datos, se muestran en una tabla para poder ir conociéndolos mejor. Además, en la tabla que se muestra a continuación, se puede observar el tipo de variable del que se trata en cada ocasión.
+
+```{r}
+
+rmarkdown::paged_table(dataframe)
+
+```
+
+En la tabla anterior se puede observar las diferentes variables contenidas en el dataset, así como el tipo de variable que se trata en cada ocasión. Como se puede observar, todas las variables se encuentran en el formato que se desea. Por lo tanto, no será necesaria ninguna modificación.
+
+
+## Búsqueda de valores Nan o perdidos
+
+El primer paso en la limpieza de datos consistirá en realizar una búsqueda de valores perdidos, es decir, saber si existen observaciones para las cuales no se conoce su valor. Para ello, se utilizará la función propia de R “is.na()”. Recordar, que este es un paso muy importante, ya que algunas funciones de R podrían no funcionar de manera correcta en caso de haber valores nulos.
+
+En el caso de encontrar valores Nan, habrá que decidir qué hacer con ellos. En el caso más trivial, siempre y cuando no representen un porcentaje elevado de observaciones, se podría optar por eliminar las filas en la que haya valores desconocidos. Sin embargo, en el caso de no considerar esto una buena práctica, existen otros métodos como sustituirlos por la media o la mediana de la variable a la que correspondan. En el caso, de elegir sustituir por la media de la variable, hay que prestar especial atención a que dicha variable no contenga valores extremos, ya que la media es un estadístico muy sensiblea este tipo de valores.
+
+```{r}
+
+colSums(is.na(dataframe))%>% #Se analiza el número de Na que hay en cada variable
+  kbl() %>%
+  kable_styling()%>%
+  row_spec(row = 0, bold = T, color = "white", background = "#BE8F00")
+
+
+```
+
+Como se puede observar en la tabla anterior, en un primer momento, parece que no hay ningún valor perdido en las variables que se tienen pensado utilizar en las visualizaciones.
+
+Tras este análisis previo, se concluye que se puede trabajar con la base de datos original debido a que no hay ninguna variable que necesite ser modificada.
+
